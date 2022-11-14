@@ -67,13 +67,18 @@ void isiKartu(pemain &p){
     }
 }
 
-void pasangDadu(pemain &p, int kedalaman){
+void pasangDadu(pemain &p){
     // Inisialisasi dadu
-    int attack = 0, defend = 0, heal = 0;
     for (int i = 0; i < 6; i++){
         dadu[i] = "kosong";
     }
+    
+    // Inisialisasi jumlah masing-masing kartu yang akan ditempelkan ke dadu
+    int dadu_attack = 0, dadu_defend = 0, dadu_heal = 0;
 
+    // Inisialisasi kartu yang dimiliki pemain
+    int attack = 0, defend = 0, heal = 0;
+    
     // Menghitung jumlah kartu yang dimiliki pemain
     for (int i = 0; i < 10; i++){
         if (p.kartu[i] == "Attack"){
@@ -84,53 +89,68 @@ void pasangDadu(pemain &p, int kedalaman){
             heal++;
         }
     }
+    
+    while (true) {
+        // cek_jumlah_kartu berfungsi untuk mengecek total semua kartu yang diinput user
+        //      agar tidak lebih dari 6
+        // cek_kecukupan_kartu berfungsi untuk mengecek kecukupan masing-masing kartu
+        //      agar tidak lebih dari jumlah kartu yang dimiliki
+        bool cek_jumlah_kartu = true, cek_kecukupan_kartu = true;
 
-    // Menerima input kartu yang ingin ditempel ke dadu dari pemain
-    std::cout << "Kartu yang kamu miliki:" << endl;
-    std::cout << "1. Attack : " << attack << endl;
-    std::cout << "2. Defend : " << defend << endl;
-    std::cout << "3. Heal   : " << heal << endl;
-    std::cout << "Masukkan enam kartu ke dadu (Contoh: Attack Defend Defend Heal Heal Heal): ";
-    for (int i = 0; i < 6; i++){
-        cin >> dadu[i];
-    }
+        // Menerima input kartu yang ingin ditempel ke dadu dari pemain
+        std::cout << "Kartu yang kamu miliki:" << endl;
+        std::cout << "1. Attack : " << attack << endl;
+        std::cout << "2. Defend : " << defend << endl;
+        std::cout << "3. Heal   : " << heal << endl;
+        std::cout << "Masukkan enam kartu ke dadu:" << endl;
 
-    // Validasi input yang diberikan pemain
-    for (int i = 0; i < 6; i++){
-        if (!(dadu[i] == "Attack" or dadu[i] == "Defend" or dadu[i] == "Heal")){
-            std::cout << "Mohon masukkan nama kartu yang valid (Contoh: Attack, Defend, Heal)" << endl;
-            pasangDadu(p, kedalaman + 1);
+        cout << "Attack : "; cin >> dadu_attack;
+        cout << "Defend : "; cin >> dadu_defend;
+        cout << "Heal   : "; cin >> dadu_heal;
+
+        // Cek
+        if (dadu_attack + dadu_defend + dadu_heal > 6) {
+            std::cout << "WARNING! Jumlah kartu yang kamu tempelkan ke dadu lebih dari 6" << endl;
+            cek_jumlah_kartu = false;
+        }
+
+        if (dadu_attack > attack or dadu_defend > defend or dadu_heal > heal){
+            std::cout << "WARNING! Kamu tidak memiliki kartu yang cukup untuk menempel kartu yang kamu inginkan" << endl;
+            cek_kecukupan_kartu = false;
+        }
+
+        // Decision
+        if (cek_jumlah_kartu == true && cek_kecukupan_kartu == true) {
             break;
         }
     }
-    int dadu_attack = 0, dadu_defend = 0, dadu_heal = 0;
+
+    // Memasang kartu ke dadu
+    int i = 0;
+    for (i = 0; i < dadu_attack; i++) {
+        dadu[i] = "Attack";
+    }
+    for (i = i; i < dadu_defend + dadu_attack; i++) {
+        dadu[i] = "Defend";
+    }
+    for (i = i; i < dadu_defend + dadu_attack + dadu_heal; i++) {
+        dadu[i] = "Heal";
+    }
+
+    // Menampilkan dadu yang telah dipasang kartu
+    for (i = 0; i < dadu_defend + dadu_attack + dadu_heal; i++) {
+        cout << dadu[i] << " ";
+    }
+    cout << endl;
+
+    // Menghapus kartu yang dimiliki pemain karena sudah terpasang di dadu
     for (int i = 0; i < 6; i++){
         if (dadu[i] == "Attack"){
-            dadu_attack++;
+            hapusKartu(p, "Attack");
         } else if (dadu[i] == "Defend"){
-            dadu_defend++;
-        } else if(dadu[i] == "Heal"){
-            dadu_heal++;
-        }
-    }
-    for (int i = 0; i < 6; i++){
-        if (dadu_attack > attack or dadu_defend > defend or dadu_heal > heal){
-            std::cout << "Kamu tidak memiliki kartu yang cukup untuk menempel kartu yang kamu inginkan" << endl;
-            pasangDadu(p, kedalaman + 1);
-            break;
-        }
-    }
-
-    // Hapus kartu milik pemain yang ditempelkan ke dadu jika ini adalah function call pertama, bukan function call secara rekursif
-    if (kedalaman == 1){
-        for (int i = 0; i < 6; i++){
-            if (dadu[i] == "Attack"){
-                hapusKartu(p, "Attack");
-            } else if (dadu[i] == "Defend"){
-                hapusKartu(p, "Defend");
-            } else if (dadu[i] == "Heal"){
-                hapusKartu(p, "Heal");
-            }
+            hapusKartu(p, "Defend");
+        } else if (dadu[i] == "Heal"){
+            hapusKartu(p, "Heal");
         }
     }
 }
@@ -218,7 +238,7 @@ void battleTurn(pemain &p, musuh &m, int turn){
 
     m.aksi = aksiMusuh(turn);
 
-    pasangDadu(p, 1);
+    pasangDadu(p);
 
     p.aksi = lemparDadu();
 
