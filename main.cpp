@@ -2,6 +2,8 @@
 #include <string>
 #include <time.h>
 #include <cstdlib>
+#include <conio.h>
+#include <unistd.h>
 using namespace std;
 
 string dadu[6];
@@ -37,6 +39,13 @@ int main() {
         turn++;
     }
 
+    if (slime.hp <= 0) {
+        cout << "\nYOU WIN!" << endl;
+    }
+    else {
+        cout << "\nYOU LOSE :P" << endl;
+    }
+    
     std::cout << "Game Selesai";
 
     return 0;
@@ -67,7 +76,7 @@ void isiKartu(pemain &p){
     }
 }
 
-void pasangDadu(pemain &p){
+void pasangDadu(pemain &p, musuh &m, int turn){
     // Inisialisasi dadu
     for (int i = 0; i < 6; i++){
         dadu[i] = "kosong";
@@ -102,8 +111,9 @@ void pasangDadu(pemain &p){
         std::cout << "1. Attack : " << attack << endl;
         std::cout << "2. Defend : " << defend << endl;
         std::cout << "3. Heal   : " << heal << endl;
-        std::cout << "Masukkan enam kartu ke dadu:" << endl;
+        std::cout << "-----------------------------" << endl;
 
+        std::cout << "Masukkan enam kartu ke dadu:" << endl;
         cout << "Attack : "; cin >> dadu_attack;
         cout << "Defend : "; cin >> dadu_defend;
         cout << "Heal   : "; cin >> dadu_heal;
@@ -123,6 +133,14 @@ void pasangDadu(pemain &p){
         if (cek_jumlah_kartu == true && cek_kecukupan_kartu == true) {
             break;
         }
+
+        cout << "Press any key to continue...";
+        getch();
+        system("cls");
+
+        // Kalo salah ngeprint ulang tampilannya
+        printVisual(p, m, turn);
+        m.aksi = aksiMusuh(turn);
     }
 
     // Memasang kartu ke dadu
@@ -160,12 +178,21 @@ void printVisual(pemain &p, musuh &m, int turn){
     // for (int i = 0; i < 10; i++){
     //     std::cout << text_art[i] << endl;
     // }
-    std::cout << "Turn ke-" << turn + 1 << endl;
+    std::cout << "== Turn ke-" << turn + 1 << " ==" << endl;
     std::cout << "HP musuh: " << m.hp << endl;
     std::cout << "HP pemain: " << p.hp << endl;
+    std::cout << "-----------------------------" << endl;
 }
 
 string lemparDadu(){
+    cout << "Mengocok dadu";
+    for (int i = 0; i < 3; i++) {
+        sleep(1);
+        cout << '.';
+    }
+    sleep(1);
+    cout << endl;
+    
     srand(time(0));
     switch (rand() % 6){
         case 0:
@@ -196,14 +223,17 @@ string aksiMusuh(int turn){
         case 0:
             // Print text art untuk kartu attack (TODO)
             std::cout << "Aksi musuh berikutnya: Attack" << endl;
+            std::cout << "-----------------------------" << endl;
             return "Attack";
         case 1:
             // Print text art untuk kartu defend (TODO)
             std::cout << "Aksi musuh berikutnya: Defend" << endl;
+            std::cout << "-----------------------------" << endl;
             return "Defend";
         case 2:
             // Print text art untuk kartu heal (TODO)
             std::cout << "Aksi musuh berikutnya: Heal" << endl;
+            std::cout << "-----------------------------" << endl;
             return "Heal";
         default:
             return "";
@@ -233,14 +263,19 @@ void interaksiAksi(pemain &p, musuh &m){
 }
 
 void battleTurn(pemain &p, musuh &m, int turn){
+    system("cls");
     isiKartu(p);
     printVisual(p, m, turn);
 
     m.aksi = aksiMusuh(turn);
 
-    pasangDadu(p);
+    pasangDadu(p, m, turn);
 
     p.aksi = lemparDadu();
+    std::cout << "-----------------------------" << endl;
+
+    cout << "Press any key to continue...";
+    getch();
 
     interaksiAksi(p, m);
 }
