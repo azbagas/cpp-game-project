@@ -164,8 +164,10 @@ string lemparDadu(){
             std::cout << "Dadu dilempar dan aksi yang dilakukan adalah: " << dadu[4] << endl;    
             return dadu[4];
         case 5:
-            std::cout << "Dadu dilempar dan aksi yang dilakukan adalah: " << dadu[5];                
+            std::cout << "Dadu dilempar dan aksi yang dilakukan adalah: " << dadu[5] << endl;            
             return dadu[5];
+        default:
+            return "";
     }
 }
 
@@ -183,6 +185,8 @@ string aksiMusuh(int turn){
             // Print text art untuk kartu heal (TODO)
             std::cout << "Aksi musuh berikutnya: Heal" << endl;
             return "Heal";
+        default:
+            return "";
     }
 }
 

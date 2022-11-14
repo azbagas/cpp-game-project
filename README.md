@@ -39,6 +39,22 @@ Keterangan:
 - H: Heal
 -----------------------------------------------------------------------------------------
 Pembagian tugas:
-Bagas   : data -> logic per-turn
-David   : logic per-turn
-Asyraf  : Hompage -> logic per-turn
+- Bagas   : data -> logic per-turn
+- David   : logic per-turn
+- Asyraf  : Hompage -> logic per-turn
+
+To Do #1
+1. Ganti cara masukkan kartu menggunakan angka saja. Contoh: 
+   - Attack: (input)
+   - Defend: (input)
+   - Heal: (input)
+2. Tampilan musuh
+3. Tampilan homepage
+4. Aksi musuh berikutnya di-random
+5. Implementasikan delay output setelah hasil pelemparan dadu
+6. Implementasikan clearscreen setelah delay 
+7. Tampilan lemparan (opsional)
+__________
+|        |
+| attack |
+|________|
