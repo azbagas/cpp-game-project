@@ -22,7 +22,7 @@ struct pemain{
 // Prototipe Fungsi
 void startPage();
 void isiKartu(pemain &p);
-void pasangDadu(pemain &p, int kedalaman);
+void pasangDadu(pemain &p);
 void hapusKartu(pemain &p, string kartu);
 void printVisual(pemain &p, musuh &m, int turn);
 string lemparDadu();
