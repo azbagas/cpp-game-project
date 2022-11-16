@@ -23,6 +23,7 @@ struct pemain{
 
 // Prototipe Fungsi
 void startPage();
+void playGame();
 void isiKartu(pemain &p);
 void pasangDadu(pemain &p);
 void hapusKartu(pemain &p, string kartu);
@@ -33,6 +34,47 @@ void interaksiAksi(pemain &p, musuh &m);
 void battleTurn(pemain &p, musuh &m, int turn);
 
 int main() {
+    startPage();
+    return 0;
+}
+
+// Definisi Fungsi
+// Fungsi Alur Permainan Utama
+void startPage(){
+    cout << "==========================" << endl;
+	cout << "      MAGIC  DUNGEON      " << endl;
+	cout << "--------------------------" << endl;
+	cout << "  Turn Based  Combat RPG  " << endl;
+	cout << endl;
+	cout << "       *" << endl;
+	cout << "       ***" << endl;
+	cout << "        ***" << endl;
+	cout << "         ***" << endl;
+	cout << "          ***" << endl;
+	cout << "           ***" << endl;
+	cout << "            ***" << endl;
+	cout << "          *********" << endl;
+	cout << "           *********" << endl;
+	cout << "               ***" << endl;
+	cout << "                ***" << endl;
+	cout << endl;
+	cout << "--------------------------" << endl;
+    cout << "--Press Any Key to Play!--" << endl;
+	cout << "==========================" << endl;
+	getch();
+	playGame();
+    cout << endl;
+    cout << "=============================" << endl;
+	cout << "    Thank you for playing!   " << endl;
+	cout << "-----------------------------" << endl;
+	cout << "         Project By:         " << endl << endl;
+	cout << "  David Louis                " << endl;
+	cout << "  Azhar Bagaskara            " << endl;
+	cout << "  Asyraf Nur Ardliansyah     " << endl;
+	cout << "=============================" << endl;
+}
+
+void playGame() {
     int turn = 0;
     while (orang.hp > 0 and slime.hp > 0){
         battleTurn(orang, slime, turn);
@@ -45,16 +87,8 @@ int main() {
     else {
         cout << "\nYOU LOSE :P" << endl;
     }
-    
-    std::cout << "Game Selesai";
 
-    return 0;
-}
-
-// Definisi Fungsi
-// Fungsi Alur Permainan Utama
-void startPage(){
-    // Bagian Asyraf
+    std::cout << "Game Selesai" << endl;
 }
 
 void isiKartu(pemain &p){
