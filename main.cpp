@@ -155,12 +155,6 @@ void pasangDadu(pemain &p, musuh &m, int turn){
         dadu[i] = "Heal";
     }
 
-    // Menampilkan dadu yang telah dipasang kartu
-    for (i = 0; i < dadu_defend + dadu_attack + dadu_heal; i++) {
-        cout << dadu[i] << " ";
-    }
-    cout << endl;
-
     // Menghapus kartu yang dimiliki pemain karena sudah terpasang di dadu
     for (int i = 0; i < 6; i++){
         if (dadu[i] == "Attack"){
@@ -210,6 +204,7 @@ string lemparDadu(){
         }
     }
     usleep(510000);
+    cout << "=============================" << endl;
     int rand_num = rand() % 6;
     switch (dadu[rand_num][0]){
             case 'A':
