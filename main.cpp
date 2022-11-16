@@ -23,16 +23,58 @@ struct pemain{
 
 // Prototipe Fungsi
 void startPage();
+void playGame();
 void isiKartu(pemain &p);
 void pasangDadu(pemain &p);
 void hapusKartu(pemain &p, string kartu);
 void printVisual(pemain &p, musuh &m, int turn);
 string lemparDadu();
-string aksiMusuh(int turn);
+string aksiMusuh();
 void interaksiAksi(pemain &p, musuh &m);
 void battleTurn(pemain &p, musuh &m, int turn);
 
 int main() {
+    startPage();
+    return 0;
+}
+
+// Definisi Fungsi
+// Fungsi Alur Permainan Utama
+void startPage(){
+    cout << "==========================" << endl;
+	cout << "      MAGIC  DUNGEON      " << endl;
+	cout << "--------------------------" << endl;
+	cout << "  Turn Based  Combat RPG  " << endl;
+	cout << endl;
+	cout << "       *" << endl;
+	cout << "       ***" << endl;
+	cout << "        ***" << endl;
+	cout << "         ***" << endl;
+	cout << "          ***" << endl;
+	cout << "           ***" << endl;
+	cout << "            ***" << endl;
+	cout << "          *********" << endl;
+	cout << "           *********" << endl;
+	cout << "               ***" << endl;
+	cout << "                ***" << endl;
+	cout << endl;
+	cout << "--------------------------" << endl;
+    cout << "--Press Any Key to Play!--" << endl;
+	cout << "==========================" << endl;
+	getch();
+	playGame();
+    cout << endl;
+    cout << "=============================" << endl;
+	cout << "    Thank you for playing!   " << endl;
+	cout << "-----------------------------" << endl;
+	cout << "         Project By:         " << endl << endl;
+	cout << "  David Lois                 " << endl;
+	cout << "  Azhar Bagaskara            " << endl;
+	cout << "  Asyraf Nur Ardliansyah     " << endl;
+	cout << "=============================" << endl;
+}
+
+void playGame() {
     int turn = 0;
     while (orang.hp > 0 and slime.hp > 0){
         battleTurn(orang, slime, turn);
@@ -45,16 +87,8 @@ int main() {
     else {
         cout << "\nYOU LOSE :P" << endl;
     }
-    
-    std::cout << "Game Selesai";
 
-    return 0;
-}
-
-// Definisi Fungsi
-// Fungsi Alur Permainan Utama
-void startPage(){
-    // Bagian Asyraf
+    std::cout << "Game Selesai" << endl;
 }
 
 void isiKartu(pemain &p){
@@ -76,7 +110,7 @@ void isiKartu(pemain &p){
     }
 }
 
-void pasangDadu(pemain &p, musuh &m, int turn){
+void pasangDadu(pemain &p, musuh &m, int turn, string aksi_musuh){
     // Inisialisasi dadu
     for (int i = 0; i < 6; i++){
         dadu[i] = "kosong";
@@ -119,8 +153,8 @@ void pasangDadu(pemain &p, musuh &m, int turn){
         cout << "Heal   : "; cin >> dadu_heal;
 
         // Cek
-        if (dadu_attack + dadu_defend + dadu_heal > 6) {
-            std::cout << "WARNING! Jumlah kartu yang kamu tempelkan ke dadu lebih dari 6" << endl;
+        if (dadu_attack + dadu_defend + dadu_heal != 6) {
+            std::cout << "WARNING! Jumlah kartu yang kamu tempelkan ke dadu tidak valid" << endl;
             cek_jumlah_kartu = false;
         }
 
@@ -140,7 +174,7 @@ void pasangDadu(pemain &p, musuh &m, int turn){
 
         // Kalo salah ngeprint ulang tampilannya
         printVisual(p, m, turn);
-        m.aksi = aksiMusuh(turn);
+        std::cout << "Aksi musuh berikutnya adalah: " << aksi_musuh << endl;
     }
 
     // Memasang kartu ke dadu
@@ -154,12 +188,6 @@ void pasangDadu(pemain &p, musuh &m, int turn){
     for (i = i; i < dadu_defend + dadu_attack + dadu_heal; i++) {
         dadu[i] = "Heal";
     }
-
-    // Menampilkan dadu yang telah dipasang kartu
-    for (i = 0; i < dadu_defend + dadu_attack + dadu_heal; i++) {
-        cout << dadu[i] << " ";
-    }
-    cout << endl;
 
     // Menghapus kartu yang dimiliki pemain karena sudah terpasang di dadu
     for (int i = 0; i < 6; i++){
@@ -185,16 +213,56 @@ void printVisual(pemain &p, musuh &m, int turn){
 }
 
 string lemparDadu(){
-    cout << "Mengocok dadu";
-    for (int i = 0; i < 3; i++) {
-        sleep(1);
-        cout << '.';
+    srand(time(0));
+    cout << "Mengocok dadu..." << endl;
+    for (int i = 0; i < 6; i++) {
+        usleep(10000 + (i * 90000));
+        switch (dadu[i][0]){
+            case 'A':
+                cout << "*----*" << endl;
+                cout << "| ATT|" << endl;
+                cout << "*----*" << endl;
+                break;
+            case 'D':
+                cout << "*----*" << endl;
+                cout << "| DEF|" << endl;
+                cout << "*----*" << endl;
+                break;
+            case 'H':
+                cout << "*----*" << endl;
+                cout << "|HEAL|" << endl;
+                cout << "*----*" << endl;
+                break;
+            default:
+                break;
+        }
     }
-    sleep(1);
+    usleep(510000);
+    cout << "=============================" << endl;
+    int rand_num = rand() % 6;
+    switch (dadu[rand_num][0]){
+            case 'A':
+                cout << "*----*" << endl;
+                cout << "| ATT|" << endl;
+                cout << "*----*" << endl;
+                break;
+            case 'D':
+                cout << "*----*" << endl;
+                cout << "| DEF|" << endl;
+                cout << "*----*" << endl;
+                break;
+            case 'H':
+                cout << "*----*" << endl;
+                cout << "|HEAL|" << endl;
+                cout << "*----*" << endl;
+                break;
+            default:
+                break;
+        }
     cout << endl;
     
-    srand(time(0));
-    switch (rand() % 6){
+
+    switch (rand_num){
         case 0:
             std::cout << "Dadu dilempar dan aksi yang dilakukan adalah: " << dadu[0] << endl;    
             return dadu[0];
@@ -218,8 +286,9 @@ string lemparDadu(){
     }
 }
 
-string aksiMusuh(int turn){
-    switch (turn % 3){
+string aksiMusuh(){
+    srand(time(0));
+    switch (rand() % 3){
         case 0:
             // Print text art untuk kartu attack (TODO)
             std::cout << "Aksi musuh berikutnya: Attack" << endl;
@@ -244,21 +313,37 @@ void interaksiAksi(pemain &p, musuh &m){
     if (p.aksi == "Attack" and m.aksi == "Attack"){
         p.hp -= 2;
         m.hp -= 2;
+        std::cout << "Musuh (HP -2): no u" << endl;
+        std::cout << "Kamu (HP -2): no u" << endl;
     } else if (p.aksi == "Heal" and m.aksi == "Heal"){
         p.hp += 1;
         m.hp += 1;
+        std::cout << "Musuh (HP +1): haha ez" << endl;
+        std::cout << "Kamu (HP +1): haha ez" << endl;
     } else if (p.aksi == "Attack" and m.aksi == "Defend"){
         p.hp -= 1;
+        std::cout << "Musuh: lol u sux" << endl;
+        std::cout << "Kamu (HP -1): noo u sux moar :(" << endl;
     } else if (p.aksi == "Attack" and m.aksi == "Heal"){
         m.hp -= 1;
+        std::cout << "Musuh (HP -1): noo u sux moar" << endl;
+        std::cout << "Kamu: lol u sux" << endl;
     } else if (p.aksi == "Defend" and m.aksi == "Attack"){
         m.hp -= 1;
+        std::cout << "Musuh (HP -1): :(((((" << endl;
+        std::cout << "Kamu: soo dum dum" << endl;
     } else if (p.aksi == "Heal" and m.aksi == "Attack"){
         p.hp -= 1;
+        std::cout << "Musuh: soo dum dum" << endl;
+        std::cout << "Kamu (HP -1): :(((((" << endl;
     } else if (p.aksi == "Defend" and m.aksi == "Heal"){
         m.hp += 1;
+        std::cout << "Musuh (HP +1): haha ez ggwp" << endl;
+        std::cout << "Kamu: u haxxx" << endl;
     } else if (p.aksi == "Heal" and m.aksi == "Defend"){
         p.hp += 1;
+        std::cout << "Musuh: u haxxx" << endl;
+        std::cout << "Kamu (HP +1): haha ez ggwp" << endl;
     }
 }
 
@@ -267,17 +352,17 @@ void battleTurn(pemain &p, musuh &m, int turn){
     isiKartu(p);
     printVisual(p, m, turn);
 
-    m.aksi = aksiMusuh(turn);
+    m.aksi = aksiMusuh();
 
-    pasangDadu(p, m, turn);
+    pasangDadu(p, m, turn, m.aksi);
 
     p.aksi = lemparDadu();
+
+    interaksiAksi(p, m);
     std::cout << "-----------------------------" << endl;
 
     cout << "Press any key to continue...";
     getch();
-
-    interaksiAksi(p, m);
 }
 
 // Fungsi Pembantu
