@@ -119,8 +119,8 @@ void pasangDadu(pemain &p, musuh &m, int turn){
         cout << "Heal   : "; cin >> dadu_heal;
 
         // Cek
-        if (dadu_attack + dadu_defend + dadu_heal > 6) {
-            std::cout << "WARNING! Jumlah kartu yang kamu tempelkan ke dadu lebih dari 6" << endl;
+        if (dadu_attack + dadu_defend + dadu_heal != 6) {
+            std::cout << "WARNING! Jumlah kartu yang kamu tempelkan ke dadu tidak valid" << endl;
             cek_jumlah_kartu = false;
         }
 
@@ -185,16 +185,55 @@ void printVisual(pemain &p, musuh &m, int turn){
 }
 
 string lemparDadu(){
-    cout << "Mengocok dadu";
-    for (int i = 0; i < 3; i++) {
-        sleep(1);
-        cout << '.';
+    srand(time(0));
+    cout << "Mengocok dadu..." << endl;
+    for (int i = 0; i < 6; i++) {
+        usleep(10000 + (i * 90000));
+        switch (dadu[i][0]){
+            case 'A':
+                cout << "*----*" << endl;
+                cout << "| ATT|" << endl;
+                cout << "*----*" << endl;
+                break;
+            case 'D':
+                cout << "*----*" << endl;
+                cout << "| DEF|" << endl;
+                cout << "*----*" << endl;
+                break;
+            case 'H':
+                cout << "*----*" << endl;
+                cout << "|HEAL|" << endl;
+                cout << "*----*" << endl;
+                break;
+            default:
+                break;
+        }
     }
-    sleep(1);
+    usleep(510000);
+    int rand_num = rand() % 6;
+    switch (dadu[rand_num][0]){
+            case 'A':
+                cout << "*----*" << endl;
+                cout << "| ATT|" << endl;
+                cout << "*----*" << endl;
+                break;
+            case 'D':
+                cout << "*----*" << endl;
+                cout << "| DEF|" << endl;
+                cout << "*----*" << endl;
+                break;
+            case 'H':
+                cout << "*----*" << endl;
+                cout << "|HEAL|" << endl;
+                cout << "*----*" << endl;
+                break;
+            default:
+                break;
+        }
     cout << endl;
     
-    srand(time(0));
-    switch (rand() % 6){
+
+    switch (rand_num){
         case 0:
             std::cout << "Dadu dilempar dan aksi yang dilakukan adalah: " << dadu[0] << endl;    
             return dadu[0];
@@ -244,21 +283,37 @@ void interaksiAksi(pemain &p, musuh &m){
     if (p.aksi == "Attack" and m.aksi == "Attack"){
         p.hp -= 2;
         m.hp -= 2;
+        std::cout << "Musuh: no u" << endl;
+        std::cout << "Kamu: no u" << endl;
     } else if (p.aksi == "Heal" and m.aksi == "Heal"){
         p.hp += 1;
         m.hp += 1;
+        std::cout << "Musuh: haha ez" << endl;
+        std::cout << "Kamu: haha ez" << endl;
     } else if (p.aksi == "Attack" and m.aksi == "Defend"){
         p.hp -= 1;
+        std::cout << "Musuh: lol u sux" << endl;
+        std::cout << "Kamu: noo u sux moar :(" << endl;
     } else if (p.aksi == "Attack" and m.aksi == "Heal"){
         m.hp -= 1;
+        std::cout << "Musuh: noo u sux moar" << endl;
+        std::cout << "Kamu: lol u sux" << endl;
     } else if (p.aksi == "Defend" and m.aksi == "Attack"){
         m.hp -= 1;
+        std::cout << "Musuh: :(((((" << endl;
+        std::cout << "Kamu: soo dum dum" << endl;
     } else if (p.aksi == "Heal" and m.aksi == "Attack"){
         p.hp -= 1;
+        std::cout << "Musuh: soo dum dum" << endl;
+        std::cout << "Kamu: :(((((" << endl;
     } else if (p.aksi == "Defend" and m.aksi == "Heal"){
         m.hp += 1;
+        std::cout << "Musuh: haha ez ggwp" << endl;
+        std::cout << "Kamu: u haxxx" << endl;
     } else if (p.aksi == "Heal" and m.aksi == "Defend"){
         p.hp += 1;
+        std::cout << "Musuh: u haxxx" << endl;
+        std::cout << "Kamu: haha ez ggwp" << endl;
     }
 }
 
@@ -272,12 +327,12 @@ void battleTurn(pemain &p, musuh &m, int turn){
     pasangDadu(p, m, turn);
 
     p.aksi = lemparDadu();
+
+    interaksiAksi(p, m);
     std::cout << "-----------------------------" << endl;
 
     cout << "Press any key to continue...";
     getch();
-
-    interaksiAksi(p, m);
 }
 
 // Fungsi Pembantu
