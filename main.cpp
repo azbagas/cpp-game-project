@@ -29,7 +29,7 @@ void pasangDadu(pemain &p);
 void hapusKartu(pemain &p, string kartu);
 void printVisual(pemain &p, musuh &m, int turn);
 string lemparDadu();
-string aksiMusuh(int turn);
+string aksiMusuh();
 void interaksiAksi(pemain &p, musuh &m);
 void battleTurn(pemain &p, musuh &m, int turn);
 
@@ -68,7 +68,7 @@ void startPage(){
 	cout << "    Thank you for playing!   " << endl;
 	cout << "-----------------------------" << endl;
 	cout << "         Project By:         " << endl << endl;
-	cout << "  David Louis                " << endl;
+	cout << "  David Lois                 " << endl;
 	cout << "  Azhar Bagaskara            " << endl;
 	cout << "  Asyraf Nur Ardliansyah     " << endl;
 	cout << "=============================" << endl;
@@ -110,7 +110,7 @@ void isiKartu(pemain &p){
     }
 }
 
-void pasangDadu(pemain &p, musuh &m, int turn){
+void pasangDadu(pemain &p, musuh &m, int turn, string aksi_musuh){
     // Inisialisasi dadu
     for (int i = 0; i < 6; i++){
         dadu[i] = "kosong";
@@ -174,7 +174,7 @@ void pasangDadu(pemain &p, musuh &m, int turn){
 
         // Kalo salah ngeprint ulang tampilannya
         printVisual(p, m, turn);
-        m.aksi = aksiMusuh(turn);
+        std::cout << "Aksi musuh berikutnya adalah: " << aksi_musuh << endl;
     }
 
     // Memasang kartu ke dadu
@@ -286,8 +286,9 @@ string lemparDadu(){
     }
 }
 
-string aksiMusuh(int turn){
-    switch (turn % 3){
+string aksiMusuh(){
+    srand(time(0));
+    switch (rand() % 3){
         case 0:
             // Print text art untuk kartu attack (TODO)
             std::cout << "Aksi musuh berikutnya: Attack" << endl;
@@ -312,37 +313,37 @@ void interaksiAksi(pemain &p, musuh &m){
     if (p.aksi == "Attack" and m.aksi == "Attack"){
         p.hp -= 2;
         m.hp -= 2;
-        std::cout << "Musuh: no u" << endl;
-        std::cout << "Kamu: no u" << endl;
+        std::cout << "Musuh (HP -2): no u" << endl;
+        std::cout << "Kamu (HP -2): no u" << endl;
     } else if (p.aksi == "Heal" and m.aksi == "Heal"){
         p.hp += 1;
         m.hp += 1;
-        std::cout << "Musuh: haha ez" << endl;
-        std::cout << "Kamu: haha ez" << endl;
+        std::cout << "Musuh (HP +1): haha ez" << endl;
+        std::cout << "Kamu (HP +1): haha ez" << endl;
     } else if (p.aksi == "Attack" and m.aksi == "Defend"){
         p.hp -= 1;
         std::cout << "Musuh: lol u sux" << endl;
-        std::cout << "Kamu: noo u sux moar :(" << endl;
+        std::cout << "Kamu (HP -1): noo u sux moar :(" << endl;
     } else if (p.aksi == "Attack" and m.aksi == "Heal"){
         m.hp -= 1;
-        std::cout << "Musuh: noo u sux moar" << endl;
+        std::cout << "Musuh (HP -1): noo u sux moar" << endl;
         std::cout << "Kamu: lol u sux" << endl;
     } else if (p.aksi == "Defend" and m.aksi == "Attack"){
         m.hp -= 1;
-        std::cout << "Musuh: :(((((" << endl;
+        std::cout << "Musuh (HP -1): :(((((" << endl;
         std::cout << "Kamu: soo dum dum" << endl;
     } else if (p.aksi == "Heal" and m.aksi == "Attack"){
         p.hp -= 1;
         std::cout << "Musuh: soo dum dum" << endl;
-        std::cout << "Kamu: :(((((" << endl;
+        std::cout << "Kamu (HP -1): :(((((" << endl;
     } else if (p.aksi == "Defend" and m.aksi == "Heal"){
         m.hp += 1;
-        std::cout << "Musuh: haha ez ggwp" << endl;
+        std::cout << "Musuh (HP +1): haha ez ggwp" << endl;
         std::cout << "Kamu: u haxxx" << endl;
     } else if (p.aksi == "Heal" and m.aksi == "Defend"){
         p.hp += 1;
         std::cout << "Musuh: u haxxx" << endl;
-        std::cout << "Kamu: haha ez ggwp" << endl;
+        std::cout << "Kamu (HP +1): haha ez ggwp" << endl;
     }
 }
 
@@ -351,9 +352,9 @@ void battleTurn(pemain &p, musuh &m, int turn){
     isiKartu(p);
     printVisual(p, m, turn);
 
-    m.aksi = aksiMusuh(turn);
+    m.aksi = aksiMusuh();
 
-    pasangDadu(p, m, turn);
+    pasangDadu(p, m, turn, m.aksi);
 
     p.aksi = lemparDadu();
 
