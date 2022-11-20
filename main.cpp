@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <conio.h>
 #include <unistd.h>
+#include <fstream>
+#include <iomanip>
 using namespace std;
 
 string dadu[6];
@@ -21,6 +23,12 @@ struct pemain{
 
 }orang = {{5}, {}};
 
+// Struct untuk simpan score
+struct DataScore{
+    string nama;
+    int score; 
+};
+
 // Prototipe Fungsi
 void startPage();
 void playGame();
@@ -32,6 +40,10 @@ string lemparDadu();
 string aksiMusuh();
 void interaksiAksi(pemain &p, musuh &m);
 void battleTurn(pemain &p, musuh &m, int turn);
+void inputScore(int turn);
+int banyakLine();
+void sorting(DataScore data_score[], int banyak_pemain);
+void printLeaderboard(DataScore data_score[], int banyak_pemain);
 
 int main() {
     startPage();
@@ -75,12 +87,14 @@ void startPage(){
 }
 
 void playGame() {
-    int turn = 0;
-    while (orang.hp > 0 and slime.hp > 0){
-        battleTurn(orang, slime, turn);
-        turn++;
-    }
+    int turn = 15;
+    
+    // while (orang.hp > 0 and slime.hp > 0){
+    //     battleTurn(orang, slime, turn);
+    //     turn++;
+    // }
 
+    system("cls");
     if (slime.hp <= 0) {
         cout << "\nYOU WIN!" << endl;
     }
@@ -89,6 +103,8 @@ void playGame() {
     }
 
     std::cout << "Game Selesai" << endl;
+
+    inputScore(turn);
 }
 
 void isiKartu(pemain &p){
@@ -203,16 +219,16 @@ void pasangDadu(pemain &p, musuh &m, int turn, string aksi_musuh){
 
 void printVisual(pemain &p, musuh &m, int turn){
     std::cout << "`;-.          ___,\n"
-"  `.`\_...._/`.-'`\n"
-"    \        /      ,\n"
-"    /()   () \    .' `-._\n"
-"   |)  .    ()\  /   _.'\n"
-"   \  -'-     ,; '. <\n"
+"  `.`\\_...._/`.-'`\n"
+"    \\        /      ,\n"
+"    /()   () \\    .' `-._\n"
+"   |)  .    ()\\  /   _.'\n"
+"   \\  -'-     ,; '. <\n"
 "    ;.__     ,;|   > /\n"
 "   / ,    / ,  |.-'.-'\n"
 "  (_/    (_/ ,;|.<`\n"
-"    \    ,     ;-`\n"
-"     >   \    /\n"
+"    \\    ,     ;-`\n"
+"     >   \\    /\n"
 "    (_,-'`> .'\n"
 "         (_,'\n";
     std::cout << "== Turn ke-" << turn + 1 << " ==" << endl;
@@ -382,4 +398,95 @@ void hapusKartu(pemain &p, string kartu){
             break;
         }
     }
+}
+
+void inputScore(int turn) {
+    int banyak_pemain = banyakLine();
+    DataScore data_score[banyak_pemain+1];
+    string line;
+
+    // Inisialisasi pemain yang sudah pernah main
+    ifstream file("data-score.txt");
+    if (file.is_open()) {
+        for (int i = 0; i < banyak_pemain; i++) {
+            getline(file, line);
+            stringstream ss(line);
+            char del;
+            ss >> data_score[i].nama >> del >> data_score[i].score;
+        }
+        file.close();
+    } 
+    else {
+        cout << "Tidak bisa membuka file";
+    }
+
+    cout << "Total turn yang kamu habiskan = " << turn << endl;
+    cout << "Masukkan nama: ";
+    cin >> ws;
+    getline(cin, data_score[banyak_pemain].nama);
+    data_score[banyak_pemain].score = turn;
+    banyak_pemain++;
+
+    // Sorting
+    sorting(data_score, banyak_pemain);
+
+    // Masukkin datanya ke file
+    ofstream ofile("data-score.txt", ios::out);
+    if(ofile.is_open()) {
+        for (int i = 0; i < banyak_pemain; i++) {
+            ofile << data_score[i].nama << " " << data_score[i].score << endl;
+        }
+        ofile.close();
+    }
+    else {
+        cout << "Tidak bisa membuka file";
+    }
+
+    printLeaderboard(data_score, banyak_pemain);
+}
+
+int banyakLine() {
+    string line;
+    int count = 0;
+
+    ifstream file("data-score.txt");
+    if (file.is_open()) {
+        while (!file.eof()) {
+            getline(file, line);
+            count++;
+        }
+        file.close();
+    } 
+    else {
+        cout << "Tidak bisa membuka file";
+    }
+
+    return count - 1;
+}
+
+void sorting(DataScore data_score[], int banyak_pemain) {
+    int i, j;
+    for (i = 0; i < banyak_pemain - 1; i++) {
+        for (j = 0; j < banyak_pemain - i - 1; j++) {
+            if (data_score[j].score < data_score[j + 1].score) {
+                DataScore temp = data_score[j];
+                data_score[j] = data_score[j + 1];
+                data_score[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void printLeaderboard(DataScore data_score[], int banyak_pemain) {
+    cout << "                   == LEADERBOARD ==                       " << endl;
+    cout << "-----------------------------------------------------------" << endl;
+    cout << "|  Rank  |     Score     |              Name              |" << endl;
+    cout << "-----------------------------------------------------------" << endl;
+    for (int i = 0; i < 5; i++) {
+        cout << "| " << setiosflags(ios::left) << setw(7) << i+1 << "|";
+        cout << " " << setiosflags(ios::left) << setw(14) << data_score[i].score << "|";
+        cout << " " << setiosflags(ios::left) << setw(31) << data_score[i].nama << "|";
+        cout <<"\n--------------------------------------------------------------\n";
+    }
+    
 }
