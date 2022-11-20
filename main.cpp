@@ -44,6 +44,7 @@ void inputScore(int turn);
 int banyakLine();
 void sorting(DataScore data_score[], int banyak_pemain);
 void printLeaderboard(DataScore data_score[], int banyak_pemain);
+void readLine(string str, char del, DataScore data_score[], int i);
 
 int main() {
     startPage();
@@ -87,7 +88,7 @@ void startPage(){
 }
 
 void playGame() {
-    int turn = 15;
+    int turn = 4;
     
     // while (orang.hp > 0 and slime.hp > 0){
     //     battleTurn(orang, slime, turn);
@@ -410,9 +411,7 @@ void inputScore(int turn) {
     if (file.is_open()) {
         for (int i = 0; i < banyak_pemain; i++) {
             getline(file, line);
-            stringstream ss(line);
-            char del;
-            ss >> data_score[i].nama >> del >> data_score[i].score;
+            readLine(line, '#', data_score, i);
         }
         file.close();
     } 
@@ -420,6 +419,7 @@ void inputScore(int turn) {
         cout << "Tidak bisa membuka file";
     }
 
+    // Input nama
     cout << "Total turn yang kamu habiskan = " << turn << endl;
     cout << "Masukkan nama: ";
     cin >> ws;
@@ -434,7 +434,7 @@ void inputScore(int turn) {
     ofstream ofile("data-score.txt", ios::out);
     if(ofile.is_open()) {
         for (int i = 0; i < banyak_pemain; i++) {
-            ofile << data_score[i].nama << " " << data_score[i].score << endl;
+            ofile << data_score[i].nama << "#" << data_score[i].score << endl;
         }
         ofile.close();
     }
@@ -442,7 +442,8 @@ void inputScore(int turn) {
         cout << "Tidak bisa membuka file";
     }
 
-    printLeaderboard(data_score, banyak_pemain);
+    cout << endl;
+    printLeaderboard(data_score, banyak_pemain-1);
 }
 
 int banyakLine() {
@@ -486,7 +487,28 @@ void printLeaderboard(DataScore data_score[], int banyak_pemain) {
         cout << "| " << setiosflags(ios::left) << setw(7) << i+1 << "|";
         cout << " " << setiosflags(ios::left) << setw(14) << data_score[i].score << "|";
         cout << " " << setiosflags(ios::left) << setw(31) << data_score[i].nama << "|";
-        cout <<"\n--------------------------------------------------------------\n";
+        cout <<"\n-----------------------------------------------------------\n";
     }
     
+}
+
+void readLine(string str, char del, DataScore data_score[], int i){
+    int banyak_var = 2;
+    string temp[banyak_var] = {"", ""};
+
+    // j untuk perulangan temp
+    int j = 0;
+
+    for(int i = 0; i < str.size(); i++){
+        if(str[i] != del){
+            temp[j] += str[i];
+        }
+        else{
+            j++;
+        }
+    }
+
+    // Masukkin data yang udah dipisah dari delimiter ke struct
+    data_score[i].nama = temp[0];
+    data_score[i].score = stoi(temp[1]);
 }
