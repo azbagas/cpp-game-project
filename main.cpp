@@ -202,10 +202,19 @@ void pasangDadu(pemain &p, musuh &m, int turn, string aksi_musuh){
 }
 
 void printVisual(pemain &p, musuh &m, int turn){
-    // Print text art musuh (TODO)
-    // for (int i = 0; i < 10; i++){
-    //     std::cout << text_art[i] << endl;
-    // }
+    std::cout << "`;-.          ___,\n"
+"  `.`\_...._/`.-'`\n"
+"    \        /      ,\n"
+"    /()   () \    .' `-._\n"
+"   |)  .    ()\  /   _.'\n"
+"   \  -'-     ,; '. <\n"
+"    ;.__     ,;|   > /\n"
+"   / ,    / ,  |.-'.-'\n"
+"  (_/    (_/ ,;|.<`\n"
+"    \    ,     ;-`\n"
+"     >   \    /\n"
+"    (_,-'`> .'\n"
+"         (_,'\n";
     std::cout << "== Turn ke-" << turn + 1 << " ==" << endl;
     std::cout << "HP musuh: " << m.hp << endl;
     std::cout << "HP pemain: " << p.hp << endl;
