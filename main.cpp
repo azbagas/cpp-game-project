@@ -59,12 +59,13 @@ void startPage(){
 	cout << "                ***" << endl;
 	cout << endl;
 	cout << "--------------------------" << endl;
-    cout << "--Press Any Key to Play!--" << endl;
+	cout << "--Press Any Key to Play!--" << endl;
 	cout << "==========================" << endl;
 	getch();
+	system("cls");
 	playGame();
-    cout << endl;
-    cout << "=============================" << endl;
+    	cout << endl;
+    	cout << "=============================" << endl;
 	cout << "    Thank you for playing!   " << endl;
 	cout << "-----------------------------" << endl;
 	cout << "         Project By:         " << endl << endl;
@@ -75,6 +76,11 @@ void startPage(){
 }
 
 void playGame() {
+    cout << "PROLOG" << endl << endl;
+    cout << "Kamu adalah manusia terpilih yang memiliki Demon Eye.\nDengan Demon Eye, kamu bisa melihat satu turn ke depan saat melawan musuh.\nOleh karena itu, kamu ditugaskan oleh Guildmaster untuk membasmi monster yang ada di Magic Dungeon." << endl << endl;
+    cout << "Press any key to continue...";
+    getch();
+    
     int turn = 0;
     while (orang.hp > 0 and slime.hp > 0){
         battleTurn(orang, slime, turn);
