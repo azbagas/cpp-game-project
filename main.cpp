@@ -23,6 +23,7 @@ struct pemain{
 
 // Prototipe Fungsi
 void startPage();
+void instruction();
 void playGame();
 void isiKartu(pemain &p);
 void pasangDadu(pemain &p);
@@ -75,7 +76,19 @@ void startPage(){
 	cout << "=============================" << endl;
 }
 
+void instruction() {
+    system("cls");
+    cout << "Instruksi Permainan" << endl << endl;
+    cout << "Pada setiap turn, pemain diberi 10 kartu\ndengan tiga macam tipe aksi (Attack, Defend, dan Heal) dengan jumlah\nmasing-masing acak." << endl << endl;
+    cout << "Pemain akan diminta memilih 6 kartu dari kartu tadi\nyang nantinya akan dipasang pada dadu untuk menentukan aksi yang dilakukan pada turn tersebut." << endl << endl;
+    cout << "Aksi pemain akan ditentukan melalui pelemparan dadu." << endl << endl;
+    cout << "Press any key to continue...";
+    getch();
+}
+
 void playGame() {
+    instruction();
+    system("cls");
     cout << "PROLOG" << endl << endl;
     cout << "Kamu adalah manusia terpilih yang memiliki Demon Eye.\nDengan Demon Eye, kamu bisa melihat satu turn ke depan saat melawan musuh.\nOleh karena itu, kamu ditugaskan oleh Guildmaster untuk membasmi monster yang ada di Magic Dungeon." << endl << endl;
     cout << "Press any key to continue...";
