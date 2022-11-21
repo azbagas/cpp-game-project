@@ -88,12 +88,13 @@ void startPage(){
 }
 
 void playGame() {
-    int turn = 4;
+    int turn = 0;
     
-    // while (orang.hp > 0 and slime.hp > 0){
-    //     battleTurn(orang, slime, turn);
-    //     turn++;
-    // }
+    while (orang.hp > 0 and slime.hp > 0){
+        battleTurn(orang, slime, turn);
+        turn++;
+        
+    }
 
     system("cls");
     if (slime.hp <= 0) {
@@ -469,7 +470,7 @@ void sorting(DataScore data_score[], int banyak_pemain) {
     int i, j;
     for (i = 0; i < banyak_pemain - 1; i++) {
         for (j = 0; j < banyak_pemain - i - 1; j++) {
-            if (data_score[j].score < data_score[j + 1].score) {
+            if (data_score[j].score > data_score[j + 1].score) {
                 DataScore temp = data_score[j];
                 data_score[j] = data_score[j + 1];
                 data_score[j + 1] = temp;
@@ -480,14 +481,14 @@ void sorting(DataScore data_score[], int banyak_pemain) {
 
 void printLeaderboard(DataScore data_score[], int banyak_pemain) {
     cout << "                   == LEADERBOARD ==                       " << endl;
-    cout << "-----------------------------------------------------------" << endl;
-    cout << "|  Rank  |     Score     |              Name              |" << endl;
-    cout << "-----------------------------------------------------------" << endl;
+    cout << "-----------------------------------------------------------------" << endl;
+    cout << "|  Rank  |     Banyak Turn     |              Name              |" << endl;
+    cout << "-----------------------------------------------------------------" << endl;
     for (int i = 0; i < 5; i++) {
         cout << "| " << setiosflags(ios::left) << setw(7) << i+1 << "|";
-        cout << " " << setiosflags(ios::left) << setw(14) << data_score[i].score << "|";
+        cout << " " << setiosflags(ios::left) << setw(20) << data_score[i].score << "|";
         cout << " " << setiosflags(ios::left) << setw(31) << data_score[i].nama << "|";
-        cout <<"\n-----------------------------------------------------------\n";
+        cout <<"\n-----------------------------------------------------------------\n";
     }
     
 }
