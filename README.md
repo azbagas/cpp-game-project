@@ -54,7 +54,3 @@ To Do #1
 5. Implementasikan delay output setelah hasil pelemparan dadu
 6. Implementasikan clearscreen setelah delay 
 7. Tampilan lemparan (opsional)
-__________
-|        |
-| attack |
-|________|
